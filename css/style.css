@@ -1,0 +1,176 @@
+body {
+    background: url('https://i.imgur.com/PT44Uni.png');
+    height: 100vmin;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: flex-end;
+    font-family: helvetica, sans-serif;
+    box-sizing: border-box;
+    margin: 0
+
+}
+
+.bets, 
+.action, 
+.insurance {
+    background: linear-gradient(#1F693A, #152F0D);
+    border-radius: 10px;
+    border: 5px solid maroon;
+    height: 13vmin;
+    width: 40vmin;
+    position: fixed;
+    bottom: 0;
+    color: goldenrod;
+    text-align: center;
+    margin: 0;
+    box-sizing: border-box
+
+}
+
+.dashboard {
+    height: 11vmin;
+    background: linear-gradient(transparent, #231204, transparent), url(https://i.imgur.com/43aaME2.jpg);
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    box-shadow: 0px -2px 2px rgba(34,34,34,0.4);
+    display: flex;
+    justify-content: center;
+}
+
+.winnings {
+    box-sizing: border-box;
+    background: black;
+    border-radius: 10px;
+    border: 5px solid #592C06 ;
+    width: 300px;
+    height: 65px;
+    position: absolute;
+    bottom: 5px; left: 3px;
+    color: goldenrod;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dealerHand,
+.playerHand {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.dealerHand {
+    margin: 10%;
+}
+
+.balance {
+    display: flex;
+    flex-direction: row;
+}
+
+.betAmount {
+    height: 50px;
+    width: 100px;
+    background: white;
+    color: black;
+}
+
+.bets {
+    color: goldenrod;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* display: none; */
+
+}
+
+.chips {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* align-content: center; */
+
+
+}
+
+.chipBet {
+    height: 60px;
+    width: 60px;
+    padding: 0 20px;
+}
+
+.action {
+    display: flex;
+    flex-direction: row;
+    width: 350px;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.insurance {
+    display: flex;
+    flex-direction: column;
+    display: none;
+}
+
+.message {
+    background: #A8C788;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: black;
+    border-width: thick;
+    height: 100px;
+    width: 300px;
+    margin-top: 50px;
+    text-align: center;
+    padding-top: 50px;
+    font-family: impact;
+    letter-spacing: 3px;
+    font-size: 30px;
+    
+}
+
+#hit,
+#doubleDown,
+#stand,
+#split {
+    height: 60px;
+    width: 70px;
+    margin: 5px;
+    border-radius: 10px;
+    border-color: black;
+    font-weight: bold;
+}
+
+
+#hit {
+    background: linear-gradient(135deg, #1B8A0A, #B4F2AB,  #1B8A0A);
+}
+
+#stand {
+    background: linear-gradient(135deg, #BF3009, #F7AE9A, #BF3009);
+}
+
+#doubleDown {
+    background: linear-gradient(135deg, #EBA61D, #FFF5BD, #EBA61D );
+}
+
+#split {
+    background: linear-gradient(135deg, #1321C6, #8A90D6, #1321C6);
+}
+.buttons {
+    height: 37px;
+}
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/cardstarter.min.css">
+    <link rel="stylesheet" href="css/cardstarter.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>BlackJack</title>
+    <script defer src="js/app.js"></script>
+</head>
+<body>
+    <div class="message"></div>
+    <div class="dealerHand">
+    </div>
+    <div class="playerHand"></div>
+    <div class="betBalance">
+        $<div class="betAmount"></div>
+    </div>
+    <div class="dashboard">
+        <div class="winnings">
+            <h4>BALANCE</h4>
+            <div class="balance">
+                $<div class="amount"></div>
+            </div>
+        </div>
+    </div>
+    <div class="bets">
+        <div class="chips">
+            <div id="black"><input type="image" class="chipBet" src="https://i.imgur.com/BkjWSWN.png" alt="submit"></div>
+            <div id="red"><input type="image" class="chipBet" src="https://i.imgur.com/mD4nBGK.png" alt="submit"></div>
+        </div>
+    </div>
+    <div class="action">
+        <button id="hit">HIT<img class="buttons" src="https://img.icons8.com/ios/50/000000/jack-of-diamonds.png"></button>
+        <button id="stand">STAND<img class="buttons" src="https://img.icons8.com/ios/50/000000/hand.png"></button>
+        <button id="doubleDown">DOUBLE<img class="buttons" src="https://img.icons8.com/ios-glyphs/30/000000/roulette-chips.png"></button>
+        <button id="split">SPLIT<img class="buttons" src="https://img.icons8.com/ios/50/000000/cards.png"></button>
+    </div>
+    <div class="insurance">
+        <h5>INSURANCE?</h5>
+        <div class="chips">
+            <div id="blackIns"><img class="chipBet" src="https://i.imgur.com/BkjWSWN.png"></div>
+            <div id="redIns"><img class="chipBet" src="https://i.imgur.com/mD4nBGK.png"></div>
+        </div>
+    </div>
+</body>
+</html>
