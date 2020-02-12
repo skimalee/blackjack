@@ -66,8 +66,10 @@ const deck =
 
 let player = [];
 let dealer = [];
-let shuffledDeck = []
+let shuffledDeck = [];
 let winnings = 1000;
+let total = 0;
+let dealerTotal = 0;
 
 /*----- cached element references -----*/
 
@@ -84,17 +86,26 @@ let blackIns = document.getElementById("blackIns");
 let redIns = document.getElementById("redIns");
 let msg = document.querySelector(".message");
 let betAmount = document.querySelector(".betAmount")
+let deal = document.querySelector(".deal")
+let dealHand = document.getElementById('dealButton')
+let actions = document.querySelector('.action');
+let bets = document.querySelector('.bets');
+let playerHand = document.createElement("div");
+let dealerHand1 = document.createElement("div");
+let dealerHand2 = document.createElement("div");
+let dealerHand = document.createElement("div");
 
 /*----- event listeners -----*/
 
-// hit.addEventListener('click', hitHand);
-// stand.addEventListener('click', standHand);
+hit.addEventListener('click', hitHand);
+stand.addEventListener('click', standHand);
 // doubleDown.addEventListener('click', doubleDownBet);
 // split.addEventListener('click', splitHand);
 console.log(redChip)
 redChip.addEventListener('click', addRed);
-// blackChip.addEventListener('click', addBlack);
+blackChip.addEventListener('click', addBlack);
 // blackIns.addEventListener('click', addBlackIns)
+dealHand.addEventListener('click', dealCards);
 
 
 /*----- functions -----*/
@@ -104,6 +115,7 @@ init();
 function init() {
     let balance = 10000;
     amount.innerHTML = balance;
+    split.disabled = "true";
 
     let betMsg = document.createElement("div");
     betMsg.innerHTML = "Place Your Bets!";
@@ -112,37 +124,90 @@ function init() {
 
 }
 
-// function dealCards() {
+function standHand() {
+    while(dealerCards.firstChild){
+        dealerCards.removeChild(dealerCards.firstChild)
+    }
+    for (let i = 0; i < dealer.length; i++) {
+        let dealerHand = document.createElement("div");
+        dealerHand.className = "card " + dealer[i].card;
+        dealerCards.appendChild(dealerHand);
+        console.log(dealerHand)
+    }
+    dealerCheckFor21();
+}
 
-//     dealPlayerCard();
-//     dealDealerCard();
-//     dealPlayerCard();
-//     dealDealerCard();
-//     render();
-// }
+function hitHand() {
+    dealPlayerCard();
+    render();
+    checkFor21();
+}
+
+function dealerCheckFor21() {
+    for (var i = 0; i < dealer.length; i++) {
+        dealerTotal = dealerTotal + dealer[i].value;
+
+        if (dealerTotal <= 16) {
+            dealDealerCard();
+
+        } 
+    
+    }
+}
+
+function checkFor21() {
+    for (var i = 0; i < player.length; i++) {
+        total = total + player[i].value;
+
+        if (total > 21) {
+            alert('you busted')
+        } else if (total <17) {
+            console.log('you can hit')
+        } else {
+            hit.disabled = "true";
+        } 
+
+    }
+}
+
+
+function dealCards() {
+    dealPlayerCard();
+    dealDealerCard();
+    dealPlayerCard();
+    dealDealerCard();
+    render();
+    checkFor21();
+
+    actions.style.display = "block";
+    deal.style.display = "none";
+}
 
 function addRed() {
-
     msg.style.display = "none";
     balance = balance - 500;
     amount.innerHTML = balance;
-    console.log('this works')
-    
     betBalance = betBalance + 500;
     betAmount.innerHTML = betBalance;
+    deal.style.display = "block";
+}
 
+function addBlack() {
+    msg.style.display = "none";
+    balance = balance - 100;
+    amount.innerHTML = balance;
+    betBalance = betBalance + 100;
+    betAmount.innerHTML = betBalance;
+    deal.style.display = "block"
 }
 
 function shuffleDeck(array) {
     let n = array.length;
-    let i
-
+    let i;
     // While there remain elements to shuffle…
     while (n) {
-
         // Pick a remaining element…
         i = Math.floor(Math.random() * n--);
-
         // And move it to the new array.
         shuffledDeck.push(array.splice(i, 1)[0]);
     }
@@ -151,11 +216,9 @@ function shuffleDeck(array) {
 
 // need a function to deal cards
 function dealPlayerCard() {
-
-    console.log(shuffledDeck)
     let playerCard = shuffledDeck.pop();
     player.push(playerCard);
-
+    playerCards.appendChild(playerHand)
 };
 
 function dealDealerCard() {
@@ -164,30 +227,26 @@ function dealDealerCard() {
 }
 
 function render() {
-
+    while(playerCards.firstChild){
+        playerCards.removeChild(playerCards.firstChild)
+    }
+    while(dealerCards.firstChild){
+        dealerCards.removeChild(dealerCards.firstChild)
+    }
     for (let i = 0; i < player.length; i++) {
-
-        let dealerHand = document.createElement("div");
         let playerHand = document.createElement("div");
-
         playerHand.className = "card " + player[i].card;
         playerCards.appendChild(playerHand);
-        console.log(playerHand);
-
-    
-
-        dealerHand.className = "card " + dealer[i].card;
-        dealerCards.appendChild(dealerHand);
-        console.log(dealerHand);
-
-            if (i > 0) {
-                dealerHand.className = "card back";
-
-            }
-
+        console.log(playerHand)
     }
-}
 
+    let dealerHand1 = document.createElement("div");
+    let dealerHand2 = document.createElement("div");
+    dealerHand1.className = "card " + dealer[0].card;
+    dealerHand2.className = "card " + "back blue"
+    dealerCards.appendChild(dealerHand1);
+    dealerCards.appendChild(dealerHand2);
+}
 
 // function addValues() {
 
@@ -211,6 +270,4 @@ function render() {
 
 // // need a function to check for a bust
 
-// function checkForBust() {
-
-// }
+// function checkForBust() 

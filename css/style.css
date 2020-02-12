@@ -8,7 +8,7 @@ body {
     flex-direction: column;
     align-items: center;
     align-content: flex-end;
-    font-family: helvetica, sans-serif;
+    font-family: Impact, sans-serif;
     box-sizing: border-box;
     margin: 0
 
@@ -47,7 +47,7 @@ body {
     background: black;
     border-radius: 10px;
     border: 5px solid #592C06 ;
-    width: 300px;
+    width: 250px;
     height: 65px;
     position: absolute;
     bottom: 5px; left: 3px;
@@ -61,7 +61,7 @@ body {
 
 .dealerHand,
 .playerHand {
-    width: 300px;
+    width: 400px;
     height: 100px;
     display: flex;
     justify-content: center;
@@ -74,13 +74,28 @@ body {
 .balance {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+}
+
+.betBalance {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;;
+    height: 100px;
+    width: 100px;
+    color: goldenrod;
+    text-align: center;
+    font-size: 30px;
+
 }
 
 .betAmount {
-    height: 50px;
-    width: 100px;
-    background: white;
-    color: black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* margin-bottom: 100px; */
 }
 
 .bets {
@@ -136,7 +151,6 @@ body {
     margin-top: 50px;
     text-align: center;
     padding-top: 50px;
-    font-family: impact;
     letter-spacing: 3px;
     font-size: 30px;
     
@@ -145,18 +159,50 @@ body {
 #hit,
 #doubleDown,
 #stand,
-#split {
+#split,
+#dealButton {
     height: 60px;
     width: 70px;
     margin: 5px;
     border-radius: 10px;
     border-color: black;
     font-weight: bold;
+    box-shadow: 3px 3px 3px #1E1E20;
 }
 
+.dealBet {
+    display: flex;
+    flex-direction: row;
+    margin-left: 30%;
+    margin-top: 15%;
+}
+
+.deal {
+    display: none;
+    margin-bottom: 30%
+}
+#dealButton {
+    background: linear-gradient(135deg, #4520A0, #BCA7EE,  #4520A0);
+    margin-bottom: 100px;
+    margin-right: 300px;
+    /* margin: 5px; */
+    border-radius: 10px;
+    border-color: black;
+    font-weight: bold;
+    height: 60px;
+    width: 100px;
+    font-size: 30px;
+    font-family: impact;
+    letter-spacing: 3px;
+    /* display: none; */
+}
 
 #hit {
     background: linear-gradient(135deg, #1B8A0A, #B4F2AB,  #1B8A0A);
+}
+
+#hit:disabled {
+    background: linear-gradient(135deg, #5B5960, #C2BECD,  #5B5960);
 }
 
 #stand {
@@ -169,6 +215,10 @@ body {
 
 #split {
     background: linear-gradient(135deg, #1321C6, #8A90D6, #1321C6);
+}
+
+#split:disabled {
+    background: linear-gradient(135deg, #5B5960, #C2BECD,  #5B5960);
 }
 .buttons {
     height: 37px;
