@@ -1,12 +1,11 @@
 /*----- constants -----*/
 
 const deck =
-
     [
-        { value: "A", card: "dA" },
-        { value: "A", card: "hA" },
-        { value: "A", card: "cA" },
-        { value: "A", card: "sA" },
+        { value: 11, card: "dA" },
+        { value: 11, card: "hA" },
+        { value: 11, card: "cA" },
+        { value: 11, card: "sA" },
         { value: 2, card: "d02" },
         { value: 2, card: "h02" },
         { value: 2, card: "c02" },
@@ -57,10 +56,11 @@ const deck =
         { value: 10, card: "sK" }
     ]
 
-    let red = 500;
-    let black = 100;
-    let balance = 10000;
-    let betBalance = 0;
+let red = 500;
+let black = 100;
+let balance = 10000;
+let betBalance = 0;
+
 
 /*----- app's state (variables) -----*/
 
@@ -84,7 +84,6 @@ let blackChip = document.getElementById("black");
 let redChip = document.getElementById("red");
 let blackIns = document.getElementById("blackIns");
 let redIns = document.getElementById("redIns");
-let msg = document.querySelector(".message");
 let betAmount = document.querySelector(".betAmount")
 let deal = document.querySelector(".deal")
 let dealHand = document.getElementById('dealButton')
@@ -94,6 +93,8 @@ let playerHand = document.createElement("div");
 let dealerHand1 = document.createElement("div");
 let dealerHand2 = document.createElement("div");
 let dealerHand = document.createElement("div");
+
+
 
 /*----- event listeners -----*/
 
@@ -106,6 +107,10 @@ redChip.addEventListener('click', addRed);
 blackChip.addEventListener('click', addBlack);
 // blackIns.addEventListener('click', addBlackIns)
 dealHand.addEventListener('click', dealCards);
+
+
+// modals
+let msg = document.querySelector(".message");
 
 
 /*----- functions -----*/
@@ -124,8 +129,38 @@ function init() {
 
 }
 
-function standHand() {
-    while(dealerCards.firstChild){
+function dealerCheckForAces() {
+    let dealerAceValue = 0;
+    let dealerTotal = 0;
+    for (var i = 0; i < dealer.length; i++) {
+        dealerTotal = dealerTotal + dealer[i].value;
+        
+        if (dealer[i].value === 11) {
+            if (dealerTotal < 21) {
+                return dealerTotal = dealerTotal - 10;
+            }
+            console.log(dealerTotal)
+        }
+    }
+}
+
+function checkForAces() {
+    console.log('checking for aces')
+    let aceValue = 11;
+    let total = 0;
+    for (var i = 0; i < player.length; i++) {
+        total = total + player[i].value;
+        
+        if (player[i].value === 11) {
+            if (total > 21) {
+                return total = total - 10;
+            }
+        }
+    }
+}
+
+function allCardsUp() {
+    while (dealerCards.firstChild) {
         dealerCards.removeChild(dealerCards.firstChild)
     }
     for (let i = 0; i < dealer.length; i++) {
@@ -134,39 +169,114 @@ function standHand() {
         dealerCards.appendChild(dealerHand);
         console.log(dealerHand)
     }
+}
+function standHand() {
+
+    // render();
+    // dealerCheckFor21();
+    render()
+    allCardsUp()
     dealerCheckFor21();
+    // checkForAces();
+    // standHand();
+
 }
 
 function hitHand() {
+    checkForAces();
     dealPlayerCard();
     render();
     checkFor21();
 }
 
 function dealerCheckFor21() {
+    // let dealerBust = document.createElement('div.message');
+    // dealerBust.innerHTML = `Dealer Busts! You Win!<br><button class="endofgame">OK</button>`
+    
+    // let dealerWin = document.createElement('div.message');
+    // dealerWin.innerHTML = `Dealer Wins!<br><button class="endofgame">OK</button>`;
+
+    // let playerWin = document.createElement('div.message');
+    // playerWin.innerHTML = `You Win!<br><button class="endofgame">OK</button>`
+
+    // let push = document.createElement('div.message');
+    // push.innerHTML = `Push!<br><button class="endofgame">OK</button>`
+
+    dealerTotal = 0
     for (var i = 0; i < dealer.length; i++) {
         dealerTotal = dealerTotal + dealer[i].value;
 
-        if (dealerTotal <= 16) {
-            dealDealerCard();
-
-        } 
-    
     }
+    if (dealerTotal <= 16) {
+        setTimeout(function () {
+            // standHand();
+            dealDealerCard();
+            render();
+            dealerCheckFor21();
+        }, 1000);
+    }
+    if (dealerTotal > 21) {
+        setTimeout(function() {
+            render()
+            allCardsUp();
+            // msg.style.display = "block";
+            // msg.appendChild(dealerBust);
+            alert('dealer busts');
+        }, 1000);
+    } else if (dealerTotal === 21) {
+        allCardsUp();
+        render()
+        return
+    } else if (dealerTotal < 21 && dealerTotal > 16) {
+        let thisTotal = 0
+        for (var i = 0; i < player.length; i++) {
+            thisTotal = thisTotal + player[i].value;
+        }
+        if (dealerTotal > thisTotal) {
+            setTimeout(function() {
+                render()
+                allCardsUp()
+                alert("DEALER WINS")
+                return
+            }, 1000)
+        } else if (dealerTotal < thisTotal) {
+            setTimeout(function() {
+                render();
+                allCardsUp();
+                alert("PLAYER WINS")
+                return
+            }, 1000)
+
+        } else {
+            setTimeout(function() {
+                render()
+                allCardsUp()
+                alert("TIE")
+                return
+            }, 1000)
+        }
+        // render()
+    }
+    // render()
 }
 
 function checkFor21() {
+    let thisTotal = 0
     for (var i = 0; i < player.length; i++) {
-        total = total + player[i].value;
-
-        if (total > 21) {
-            alert('you busted')
-        } else if (total <17) {
-            console.log('you can hit')
-        } else {
-            hit.disabled = "true";
-        } 
-
+        thisTotal = thisTotal + player[i].value;
+    }
+    if (thisTotal > 16 && thisTotal <= 21) {
+        hit.disabled = "true";
+    }
+    if (thisTotal === 21) {
+        return;
+    } else if (thisTotal > 21) {
+        setTimeout(function() {
+            allCardsUp();
+            alert('you busted');
+            dealDealerCard();
+            render();
+        }, 1000)
     }
 }
 
@@ -177,6 +287,7 @@ function dealCards() {
     dealPlayerCard();
     dealDealerCard();
     render();
+    checkForAces();
     checkFor21();
 
     actions.style.display = "block";
@@ -219,6 +330,7 @@ function dealPlayerCard() {
     let playerCard = shuffledDeck.pop();
     player.push(playerCard);
     playerCards.appendChild(playerHand)
+    checkForAces();
 };
 
 function dealDealerCard() {
@@ -227,47 +339,37 @@ function dealDealerCard() {
 }
 
 function render() {
-    while(playerCards.firstChild){
+    while (playerCards.firstChild) {
         playerCards.removeChild(playerCards.firstChild)
+        // debugger
     }
-    while(dealerCards.firstChild){
+    while (dealerCards.firstChild) {
         dealerCards.removeChild(dealerCards.firstChild)
+        // debugger
     }
     for (let i = 0; i < player.length; i++) {
         let playerHand = document.createElement("div");
         playerHand.className = "card " + player[i].card;
         playerCards.appendChild(playerHand);
-        console.log(playerHand)
+        // console.log(playerHand)
     }
 
-    let dealerHand1 = document.createElement("div");
-    let dealerHand2 = document.createElement("div");
-    dealerHand1.className = "card " + dealer[0].card;
-    dealerHand2.className = "card " + "back blue"
-    dealerCards.appendChild(dealerHand1);
-    dealerCards.appendChild(dealerHand2);
+    while (dealerCards.lastChild) {
+        dealerCards.removeChild(dealerCards.lastChildChild)
+    }
+
+    for (let i = 0; i < dealer.length; i++) {
+        let dealerHand = document.createElement("div");
+        if (dealer.length > 2) {
+            dealerHand.className = "card " + dealer[i].card;
+            dealerCards.appendChild(dealerHand);
+        } else if (i > 0) {
+            dealerHand.className = "card " + dealer[i].card;
+            dealerCards.appendChild(dealerHand);
+        } else {
+            dealerHand.className = "card " + "back blue";
+            dealerCards.appendChild(dealerHand);
+        }
+    }
+
 }
-
-// function addValues() {
-
-// }
-// // need a function to be able to split hand with same values
-// function splitHand() {
-
-// };
-
-
-
-// // need a function to call insurance
-// function insurance() {
-
-// }
-
-// // need a function to check for Blackjack
-// function blackJack() {
-
-// }
-
-// // need a function to check for a bust
-
-// function checkForBust() 
