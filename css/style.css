@@ -146,13 +146,11 @@ body {
     background: #A8C788;
     border-radius: 5px;
     border-style: solid;
-    border-color: black;
-
     height: 100px;
     width: 300px;
     margin-top: 50px;
     text-align: center;
-    padding-top: 50px;
+    padding-top: 30px;
     letter-spacing: 3px;
     font-size: 30px;
     
@@ -229,4 +227,8 @@ body {
 
 #reset-button {
     margin-bottom: 10px;
+    height: 40px;
+    width: 80px;
+    border-radius: 5px;
+
 }
