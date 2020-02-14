@@ -1,6 +1,6 @@
 /*----- constants -----*/
 
-const deck =
+let deck =
     [
         { value: 11, card: "dA" },
         { value: 11, card: "hA" },
@@ -54,8 +54,7 @@ const deck =
         { value: 10, card: "hK" },
         { value: 10, card: "cK" },
         { value: 10, card: "sK" }
-    ]
-
+    ];
 let red = 500;
 let black = 100;
 let balance = 10000;
@@ -66,6 +65,7 @@ let betBalance = 0;
 
 let player = [];
 let dealer = [];
+let splitties = [];
 let shuffledDeck = [];
 let winnings = 1000;
 let total = 0;
@@ -74,7 +74,7 @@ let dealerTotal = 0;
 /*----- cached element references -----*/
 
 let amount = document.querySelector(".amount");
-let dealerCards = document.querySelector(".dealerHand")
+let dealerCards = document.querySelector(".dealerHand");
 let playerCards = document.querySelector(".playerHand");
 let hit = document.getElementById("hit");
 let stand = document.getElementById("stand");
@@ -84,79 +84,120 @@ let blackChip = document.getElementById("black");
 let redChip = document.getElementById("red");
 let blackIns = document.getElementById("blackIns");
 let redIns = document.getElementById("redIns");
-let betAmount = document.querySelector(".betAmount")
-let deal = document.querySelector(".deal")
-let dealHand = document.getElementById('dealButton')
+let betAmount = document.querySelector(".betAmount");
+let deal = document.querySelector(".deal");
+let dealHand = document.getElementById('dealButton');
 let actions = document.querySelector('.action');
 let bets = document.querySelector('.bets');
 let playerHand = document.createElement("div");
 let dealerHand1 = document.createElement("div");
 let dealerHand2 = document.createElement("div");
 let dealerHand = document.createElement("div");
+let whoWins = document.getElementById("whoWins");
 
-
-
+let resetButton = document.querySelector("#reset-button");
 /*----- event listeners -----*/
 
 hit.addEventListener('click', hitHand);
 stand.addEventListener('click', standHand);
-// doubleDown.addEventListener('click', doubleDownBet);
+doubleDown.addEventListener('click', doubleDownBet);
 // split.addEventListener('click', splitHand);
-console.log(redChip)
+// console.log(redChip)
 redChip.addEventListener('click', addRed);
 blackChip.addEventListener('click', addBlack);
 // blackIns.addEventListener('click', addBlackIns)
 dealHand.addEventListener('click', dealCards);
+resetButton.addEventListener('click', handleReset);
 
 
 // modals
 let msg = document.querySelector(".message");
+let winMsg = document.querySelector(".winMsg")
+
 
 
 /*----- functions -----*/
 
 init();
 
+function handleReset() {
+    player = [];
+    dealer = [];
+    shuffledDeck = [];
+    total = 0;
+    betBalance = 0;
+    hit.disabled = false;
+    // for (let i = 0; i < player.length; i++) {
+    //     player.pop();
+    // }
+    // for (let i = 0; i < dealer.length; i++) {
+    //     dealer.pop();
+    // }
+
+    dealerCards.innerHTML = '';
+    playerCards.innerHTML = '';
+    // while (playerCards.firstChild) {
+    //     playerCards.removeChild(playerCards.firstChild)
+    // }
+    
+    // while (dealerCards.firstChild) {
+    //     dealerCards.removeChild(dealerCards.firstChild)
+    // }
+
+    actions.style.display = "none";
+    whoWins.textContent = '';
+    // msg.remove(betMsg);
+    init();
+
+}
+
 function init() {
-    let balance = 10000;
     amount.innerHTML = balance;
     split.disabled = "true";
-
-    let betMsg = document.createElement("div");
-    betMsg.innerHTML = "Place Your Bets!";
-    msg.appendChild(betMsg);
-    shuffleDeck(deck);
-
+    msg.style.display = "block";
+    bets.style.display = "block";
+    winMsg.style.display = "none";
+    shuffleDeck([...deck]);
 }
 
 function dealerCheckForAces() {
-    let dealerAceValue = 0;
+    let dealerAces = 0;
     let dealerTotal = 0;
     for (var i = 0; i < dealer.length; i++) {
-        dealerTotal = dealerTotal + dealer[i].value;
-        
+        dealerTotal += dealer[i].value;
+
         if (dealer[i].value === 11) {
-            if (dealerTotal < 21) {
-                return dealerTotal = dealerTotal - 10;
-            }
-            console.log(dealerTotal)
+            dealerAces += 1
         }
+    // for (var i = 0; i < dealerAces; i++) {
+    if (dealerTotal > 21 && dealerAces > 0) {
+
+         dealerTotal = dealerTotal - 10;
     }
+        console.log(dealerTotal)
+    }
+    return dealerAces
 }
 
+
 function checkForAces() {
-    console.log('checking for aces')
-    let aceValue = 11;
-    let total = 0;
+    console.log("checking for aces")
+    let aces = 0;
+    total = 0;
     for (var i = 0; i < player.length; i++) {
         total = total + player[i].value;
-        
+
         if (player[i].value === 11) {
-            if (total > 21) {
-                return total = total - 10;
-            }
+            aces += 1
         }
+    // for (var i = 0; i < aces; i++) {
+        if (total > 21 && aces > 0) {
+        total = total - 10;
+         }
+    console.log(total)
+    // }
     }
+    return aces
 }
 
 function allCardsUp() {
@@ -167,8 +208,32 @@ function allCardsUp() {
         let dealerHand = document.createElement("div");
         dealerHand.className = "card " + dealer[i].card;
         dealerCards.appendChild(dealerHand);
-        console.log(dealerHand)
+        // console.log(dealerHand)
     }
+}
+
+// function splitHand() {
+//     for (let i = 0; i < player.length; i++) {
+//             if (player[i].value === player[i].value) {
+//                 let splitCard = player.pop();
+//                 splitties.push(splitCard);
+//                 splitDeal.createELement("div");
+//                 spitDeal.appendChild(splitCard);
+//         }
+//     }
+// }
+
+function doubleDownBet() {
+    balance = balance - betBalance;
+    amount.innerHTML = balance;
+    betBalance = betBalance * 2;
+    betAmount.innerHTML = betBalance;
+    dealPlayerCard();
+    render();
+    checkForAces();
+    hit.disabled = true;
+    standHand();
+
 }
 function standHand() {
 
@@ -176,82 +241,123 @@ function standHand() {
     // dealerCheckFor21();
     render()
     allCardsUp()
+    dealerCheckForAces();
     dealerCheckFor21();
-    // checkForAces();
     // standHand();
 
 }
 
 function hitHand() {
-    checkForAces();
     dealPlayerCard();
     render();
+    checkForAces();
     checkFor21();
 }
 
 function dealerCheckFor21() {
-    // let dealerBust = document.createElement('div.message');
-    // dealerBust.innerHTML = `Dealer Busts! You Win!<br><button class="endofgame">OK</button>`
-    
-    // let dealerWin = document.createElement('div.message');
-    // dealerWin.innerHTML = `Dealer Wins!<br><button class="endofgame">OK</button>`;
-
-    // let playerWin = document.createElement('div.message');
-    // playerWin.innerHTML = `You Win!<br><button class="endofgame">OK</button>`
-
-    // let push = document.createElement('div.message');
-    // push.innerHTML = `Push!<br><button class="endofgame">OK</button>`
-
     dealerTotal = 0
     for (var i = 0; i < dealer.length; i++) {
         dealerTotal = dealerTotal + dealer[i].value;
-
     }
-    if (dealerTotal <= 16) {
+    console.log(dealerTotal)
+    if (dealerTotal > 21) {
+            let currentDealerAces = dealerCheckForAces();
+            if (currentDealerAces) {
+                dealerTotal -= 10
+                if (dealerTotal < 16) {
+                    dealDealerCard();
+                    render();
+                    dealerCheckForAces();
+                    dealerCheckFor21();
+                 } else {
+                    allCardsUp();
+                    render()
+                    dealerCheckForAces();
+                    winMsg.style.display = "block";
+                    whoWins.textContent = `DEALER BUSTS!`;
+                    winMsg.insertBefore(whoWins, resetButton);
+                    balance = balance + (betBalance * 2);
+                    amount.innerHTML = balance;
+                }
+            } else {
+                allCardsUp();
+                render()
+                winMsg.style.display = "block";
+                
+                whoWins.textContent = `DEALER BUSTS`;
+                winMsg.insertBefore(whoWins, resetButton);
+                balance = balance + (betBalance * 2);
+                amount.innerHTML = balance;
+            }
+    // } else if (dealerTotal > 21) {
+    //     allCardsUp();
+    //     render()
+    //     dealerCheckForAces();
+    //     winMsg.style.display = "block";
+    //     
+    //     whoWins.innerHTML = "DEALER BUSTS";
+    //     winMsg.insertBefore(whoWins, resetButton);
+    } else if (dealerTotal === 21 && dealer.length === 2) {
+        winMsg.style.display = "block";
+        
+        whoWins.textContent = `DEALER BLACKJACK`;
+        winMsg.insertBefore(whoWins, resetButton);
+    } else if (dealerTotal === 21 && dealerTotal > total) {
+        allCardsUp();
+        render()
+        winMsg.style.display = "block";
+        
+        whoWins.textContent = `DEALER WINS`;
+        winMsg.insertBefore(whoWins, resetButton);
+        return
+    } else if (dealerTotal <= 16) {
         setTimeout(function () {
-            // standHand();
             dealDealerCard();
             render();
             dealerCheckFor21();
         }, 1000);
-    }
-    if (dealerTotal > 21) {
-        setTimeout(function() {
-            render()
-            allCardsUp();
-            // msg.style.display = "block";
-            // msg.appendChild(dealerBust);
-            alert('dealer busts');
-        }, 1000);
-    } else if (dealerTotal === 21) {
-        allCardsUp();
-        render()
-        return
     } else if (dealerTotal < 21 && dealerTotal > 16) {
         let thisTotal = 0
         for (var i = 0; i < player.length; i++) {
             thisTotal = thisTotal + player[i].value;
         }
-        if (dealerTotal > thisTotal) {
-            setTimeout(function() {
-                render()
-                allCardsUp()
-                alert("DEALER WINS")
-                return
-            }, 1000)
-        } else if (dealerTotal < thisTotal) {
-            setTimeout(function() {
+        if (dealerTotal > total) {
+            setTimeout(function () {
                 render();
                 allCardsUp();
-                alert("PLAYER WINS")
+                checkForAces();
+                winMsg.style.display = "block";
+                
+                whoWins.textContent = `DEALER WINS`;
+                winMsg.insertBefore(whoWins, resetButton);
                 return
             }, 1000)
+        } else if (dealerTotal < total) {
+            setTimeout(function () {
+                render();
+                allCardsUp();
+                checkForAces();
+                winMsg.style.display = "block";
+                
+                whoWins.textContent = `PLAYER WINS!`;
+                winMsg.insertBefore(whoWins, resetButton);
+                balance = balance + (betBalance * 2);
+                amount.innerHTML = balance;
 
-        } else {
-            setTimeout(function() {
+                return
+
+            }, 1000)
+        } else if (dealerTotal === total) {
+            setTimeout(function () {
                 render()
                 allCardsUp()
-                alert("TIE")
+                checkForAces();
+                winMsg.style.display = "block";
+                
+                whoWins.textContent = `PUSH!`;
+                winMsg.insertBefore(whoWins, resetButton);
+                balance = balance + betBalance
+                amount.innerHTML = balance;
                 return
             }, 1000)
         }
@@ -261,24 +367,74 @@ function dealerCheckFor21() {
 }
 
 function checkFor21() {
-    let thisTotal = 0
+    let total = 0;
     for (var i = 0; i < player.length; i++) {
-        thisTotal = thisTotal + player[i].value;
+        total = total + player[i].value;
     }
-    if (thisTotal > 16 && thisTotal <= 21) {
-        hit.disabled = "true";
+    if (total > 16 && total <= 21) {
+        hit.disabled = true;
     }
-    if (thisTotal === 21) {
-        return;
-    } else if (thisTotal > 21) {
+    if (player.length === 2 && total === 21) {
+            winMsg.style.display = "block";
+            
+            whoWins.textContent = `BLACKJACK!!!`;
+            winMsg.insertBefore(whoWins, resetButton);
+            balance = balance + betBalance + (betBalance * 1.5);
+            amount.innerHTML = balance;
+           
+
+    // } else if (total > 21) {
+    //     allCardsUp();
+    //     msg.style.display = "block";
+    //     let betMsg = document.createElement("div");
+    //     betMsg.innerHTML = "PLAYER WINS";
+    //     msg.appendChild(betMsg);
+    } else if (total > 21) {
         setTimeout(function() {
+        let currentAces = checkForAces();
+        if (currentAces) {
+            for (i=0; i < currentAces; i++) {
+                if (total > 21) {
+                    total -= 10;
+                } else {
+                    break;
+                }
+            }
+            
+            // if (total > 21) {
+            // allCardsUp();
+            // winMsg.style.display = "block";
+            // 
+            // whoWins.innerHTML = "PLAYER BUSTS";
+            // winMsg.insertBefore(whoWins, resetButton);
+            // }
+            if (total > 16) {
+            hit.disabled = true;
+                if (total > 21) {
+                    allCardsUp();
+                    winMsg.style.display = "block";
+                    
+                    whoWins.textContent = `PLAYER BUSTS`;
+                    winMsg.insertBefore(whoWins, resetButton);
+                    }
+            } 
+        } else {
             allCardsUp();
-            alert('you busted');
-            dealDealerCard();
+            winMsg.style.display = "block";
+            
+            whoWins.textContent = `PLAYER BUSTS`;
+            winMsg.insertBefore(whoWins, resetButton);
+        }
+        // if (dealerTotal <= 16) {
+            // dealDealerCard();
+            // checkForAces();
+            // }
             render();
         }, 1000)
-    }
+    } 
+    
 }
+
 
 
 function dealCards() {
@@ -287,6 +443,7 @@ function dealCards() {
     dealPlayerCard();
     dealDealerCard();
     render();
+
     checkForAces();
     checkFor21();
 
@@ -327,16 +484,19 @@ function shuffleDeck(array) {
 
 // need a function to deal cards
 function dealPlayerCard() {
+    console.log(shuffledDeck);
     let playerCard = shuffledDeck.pop();
     player.push(playerCard);
     playerCards.appendChild(playerHand)
     checkForAces();
+
 };
 
 function dealDealerCard() {
     let dealerCard = shuffledDeck.pop();
     dealer.push(dealerCard);
 }
+
 
 function render() {
     while (playerCards.firstChild) {
@@ -371,5 +531,6 @@ function render() {
             dealerCards.appendChild(dealerHand);
         }
     }
+
 
 }

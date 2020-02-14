@@ -20,7 +20,7 @@ body {
     background: linear-gradient(#1F693A, #152F0D);
     border-radius: 10px;
     border: 5px solid maroon;
-    height: 13vmin;
+    height: 90px;
     width: 40vmin;
     position: fixed;
     bottom: 0;
@@ -32,7 +32,7 @@ body {
 }
 
 .dashboard {
-    height: 11vmin;
+    height: 75px;
     background: linear-gradient(transparent, #231204, transparent), url(https://i.imgur.com/43aaME2.jpg);
     width: 100%;
     position: fixed;
@@ -74,8 +74,9 @@ body {
 .balance {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
 }
+
 
 .betBalance {
     display: flex;
@@ -140,12 +141,13 @@ body {
     display: none;
 }
 
-.message {
+.message,
+.winMsg {
     background: #A8C788;
     border-radius: 5px;
     border-style: solid;
     border-color: black;
-    border-width: thick;
+
     height: 100px;
     width: 300px;
     margin-top: 50px;
@@ -170,6 +172,10 @@ body {
     box-shadow: 3px 3px 3px #1E1E20;
 }
 
+.endofgame {
+    width: 50px;
+    margin: 10px;
+}
 .dealBet {
     display: flex;
     flex-direction: row;
@@ -183,9 +189,6 @@ body {
 }
 #dealButton {
     background: linear-gradient(135deg, #4520A0, #BCA7EE,  #4520A0);
-    margin-bottom: 100px;
-    margin-right: 300px;
-    /* margin: 5px; */
     border-radius: 10px;
     border-color: black;
     font-weight: bold;
@@ -194,7 +197,7 @@ body {
     font-size: 30px;
     font-family: impact;
     letter-spacing: 3px;
-    /* display: none; */
+    /* margin-top: 100px; */
 }
 
 #hit {
@@ -224,3 +227,6 @@ body {
     height: 37px;
 }
 
+#reset-button {
+    margin-bottom: 10px;
+}
