@@ -388,6 +388,7 @@ function dealCards() {
 
 function addRed() {
     msg.style.display = "none";
+    actions.style.display = "none";
     balance = balance - 500;
     amount.innerHTML = balance;
     betBalance = betBalance + 500;
@@ -397,6 +398,7 @@ function addRed() {
 
 function addBlack() {
     msg.style.display = "none";
+    actions.style.display = "none";
     balance = balance - 100;
     amount.innerHTML = balance;
     betBalance = betBalance + 100;
@@ -456,7 +458,6 @@ function render() {
             dealerHand.className = "card " + dealer[i].card;
             dealerCards.appendChild(dealerHand);
             
-        } else {
             dealerHand.className = "card " + "back blue";
             dealerCards.appendChild(dealerHand);
         }
